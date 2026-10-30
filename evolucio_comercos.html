@@ -237,6 +237,14 @@ svg#mapa[viewBox] { width: 100%; height: 100%; }   /* només mapes amb viewBox, 
   font-family: var(--font-ui); font-size: 14px; line-height: 1.35;
 }
 .btn-evolucio:hover { background: #4f4f4f; }
+/* Pampallugues per incitar a clicar (només a la vista del 2016) */
+.btn-evolucio.crida { animation: crida 1.6s ease-in-out infinite; }
+.btn-evolucio.crida:hover { animation: none; }
+@keyframes crida {
+  0%, 100% { background: var(--text); border-color: var(--text); box-shadow: 0 0 0 0 rgba(0,128,239,0.55); }
+  50% { background: #0080EF; border-color: #0080EF; box-shadow: 0 0 0 6px rgba(0,128,239,0); }
+}
+@media (prefers-reduced-motion: reduce) { .btn-evolucio.crida { animation: none; } }
 
 /* Llegenda en popover (només mòbil) */
 .botons-grafic { position: relative; display: flex; align-items: center; gap: 6px; }
@@ -280,7 +288,7 @@ svg#mapa .eix .domain { display: none; }
   <div class="capcalera-grafic">
     <p class="titolet-grafic" id="titolet">Tipologia de comerços de l’any 2016</p>
     <div class="botons-grafic">
-      <button class="btn-evolucio" id="btn-evolucio" aria-label="Canvia la vista entre el 2016 i l'evolució fins al 2024">Veure l’evolució fins a 2024</button>
+      <button class="btn-evolucio crida" id="btn-evolucio" aria-label="Canvia la vista entre el 2016 i l'evolució fins al 2024">Veure l’evolució fins a 2024</button>
       <button id="llegenda-btn" aria-label="Llegenda" aria-expanded="false">Llegenda</button>
       <div id="llegenda-popover"></div>
     </div>
@@ -854,6 +862,7 @@ btn.addEventListener('click', ev => {
   hideTooltip();
   estat = estat === '2016' ? '2024' : '2016';
   btn.textContent = BOTONS[estat];
+  btn.classList.toggle('crida', estat === '2016');
   const a2024 = estat === '2024';
   animant = true;
   svg.selectAll('.cercle').interrupt('entrada');
